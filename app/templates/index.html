@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediConnect India - Connected Healthcare Across India</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --primary-dark: #0a58ca;
+            --accent-color: #0d9488;
+            --bg-color: #f7f9fc;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --nav-bg: rgba(255, 255, 255, 0.95);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.02);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+        }
+
+        body.dark-theme {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --nav-bg: rgba(15, 23, 42, 0.95);
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* Interactive Canvas Background */
+        #network-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .relative-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Sticky Navigation */
+        .navbar-custom {
+            background-color: var(--nav-bg);
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .navbar-brand-custom {
+            font-weight: 800;
+            color: var(--text-primary) !important;
+            font-size: 1.25rem;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-link-custom {
+            font-weight: 500;
+            color: var(--text-secondary) !important;
+            font-size: 0.925rem;
+            position: relative;
+            transition: color 0.2s ease;
+        }
+
+        .nav-link-custom::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        .nav-link-custom:hover::after, .nav-link-custom.active::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .nav-link-custom:hover, .nav-link-custom.active {
+            color: var(--primary-color) !important;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            padding: 9rem 0 6rem 0;
+            background-color: transparent;
+            overflow: hidden;
+        }
+
+        /* Heading & Text Animations */
+        .hero-title {
+            font-size: 3.25rem;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -1.25px;
+            color: var(--text-primary);
+        }
+
+        .animated-heading span {
+            opacity: 0;
+            transform: translateY(20px);
+            display: inline-block;
+            animation: wordFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .animated-heading span:nth-child(1) { animation-delay: 0.1s; }
+        .animated-heading span:nth-child(2) { animation-delay: 0.2s; }
+        .animated-heading span:nth-child(3) { animation-delay: 0.3s; }
+        .animated-heading span:nth-child(4) { animation-delay: 0.4s; }
+
+        .underline-highlight {
+            position: relative;
+            display: inline-block;
+        }
+
+        .underline-highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            z-index: -1;
+            opacity: 0.7;
+            transform: scaleX(0);
+            transform-origin: left;
+            animation: lineUnderline 0.8s 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .hero-subtitle span {
+            opacity: 0;
+            display: inline-block;
+            transform: translateY(10px);
+            animation: wordFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Ripple Effect Buttons */
+        .btn-ripple {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-ripple:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-ripple:active {
+            transform: translateY(0);
+        }
+
+        /* Premium Connected Network Graphics */
+        .network-graphic-wrapper {
+            position: relative;
+            width: 100%;
+            height: 450px;
+        }
+
+        .network-graphic {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        .network-node {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: var(--card-bg);
+            border: 2px solid var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 1.25rem;
+            box-shadow: var(--shadow-sm);
+            z-index: 2;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .network-node:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 20px rgba(13, 110, 253, 0.4);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .node-center {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            font-size: 1.65rem;
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+
+        .node-center:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .node-top-left { top: 15%; left: 20%; }
+        .node-top-right { top: 15%; left: 80%; }
+        .node-bottom-left { top: 85%; left: 20%; }
+        .node-bottom-right { top: 85%; left: 80%; }
+        .node-mid-left { top: 50%; left: 10%; }
+        .node-mid-right { top: 50%; left: 90%; }
+
+        .line-flow {
+            stroke-dasharray: 8 8;
+            animation: dataFlow 4s linear infinite;
+        }
+
+        /* Floating Vector Characters */
+        .character-card {
+            position: absolute;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: var(--shadow-md);
+            animation: float 4s infinite ease-in-out;
+            z-index: 3;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: default;
+        }
+
+        .character-card:hover {
+            transform: scale(1.05) !important;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .char-img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--bg-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .char-title {
+            font-size: 0.725rem;
+            font-weight: 700;
+            margin-bottom: 1px;
+            color: var(--text-primary);
+        }
+
+        .char-status {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+        }
+
+        .char-doctor { top: 5%; left: 42%; animation-delay: 0s; }
+        .char-nurse { top: 75%; left: 45%; animation-delay: 0.5s; }
+        .char-tech { top: 30%; left: 5%; animation-delay: 1s; }
+        .char-pharmacist { top: 30%; left: 72%; animation-delay: 1.5s; }
+
+        /* Scroll Animations Utility */
+        .scroll-trigger {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .scroll-trigger.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stagger-item {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .stagger-container.visible .stagger-item {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Specific item transition delays */
+        .stagger-item:nth-child(1) { transition-delay: 0.05s; }
+        .stagger-item:nth-child(2) { transition-delay: 0.1s; }
+        .stagger-item:nth-child(3) { transition-delay: 0.15s; }
+        .stagger-item:nth-child(4) { transition-delay: 0.2s; }
+        .stagger-item:nth-child(5) { transition-delay: 0.25s; }
+        .stagger-item:nth-child(6) { transition-delay: 0.3s; }
+
+        /* Universal Section & Card Styling */
+        .section-padding {
+            padding: 7rem 0;
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -0.75px;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .enterprise-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+
+        .enterprise-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+        }
+
+        .enterprise-card:hover .enterprise-icon {
+            transform: rotate(5deg) scale(1.05);
+            color: var(--accent-color);
+        }
+
+        .enterprise-icon {
+            font-size: 1.85rem;
+            color: var(--primary-color);
+            margin-bottom: 1.25rem;
+            display: inline-block;
+            transition: transform 0.25s ease, color 0.25s ease;
+        }
+
+        /* Mockup Previews */
+        .mockup-container {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            transform: scale(0.95);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .scroll-trigger.visible .mockup-container {
+            transform: scale(1);
+        }
+
+        .mockup-header {
+            background-color: var(--bg-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .mockup-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .mockup-sidebar {
+            width: 180px;
+            background-color: var(--bg-color);
+            border-right: 1px solid var(--border-color);
+            padding: 1rem;
+            min-height: 280px;
+        }
+
+        .mockup-sidebar-item {
+            height: 10px;
+            background-color: var(--border-color);
+            border-radius: 4px;
+            margin-bottom: 0.75rem;
+            width: 80%;
+        }
+
+        .mockup-content {
+            padding: 1.25rem;
+            flex-grow: 1;
+            background-color: var(--card-bg);
+        }
+
+        .mockup-bar {
+            height: 12px;
+            background-color: var(--border-color);
+            border-radius: 6px;
+            margin-bottom: 0.75rem;
+        }
+
+        /* Workflow Timeline */
+        .workflow-timeline {
+            position: relative;
+            border-left: 2px solid var(--border-color);
+            margin-left: 1.5rem;
+            padding-left: 2rem;
+        }
+
+        .workflow-timeline::after {
+            content: '';
+            position: absolute;
+            left: -2px;
+            top: 0;
+            width: 2px;
+            height: 0;
+            background-color: var(--primary-color);
+            transition: height 1.5s ease-out;
+        }
+
+        .scroll-trigger.visible .workflow-timeline::after {
+            height: 100%;
+        }
+
+        .workflow-step {
+            position: relative;
+            padding-bottom: 2.5rem;
+        }
+
+        .workflow-step::before {
+            content: '';
+            position: absolute;
+            left: -2.4rem;
+            top: 0.25rem;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: var(--border-color);
+            border: 3px solid var(--bg-color);
+            z-index: 2;
+            transition: background-color 0.3s ease 0.5s;
+        }
+
+        .scroll-trigger.visible .workflow-step::before {
+            background-color: var(--primary-color);
+        }
+
+        /* Footer */
+        .footer-custom {
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 5rem 0 3rem 0;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-title {
+            font-weight: 700;
+            font-size: 0.925rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        /* Keyframes */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(13, 110, 253, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(13, 110, 253, 0.6); }
+        }
+
+        @keyframes dataFlow {
+            to { stroke-dashoffset: -40; }
+        }
+
+        @keyframes lineUnderline {
+            to { transform: scaleX(1); }
+        }
+
+        /* Healthcare Team Tagline and Illustration Styles */
+        .tagline-heading {
+            font-size: 1.85rem;
+            font-weight: 800;
+            line-height: 1.25;
+            letter-spacing: -0.75px;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .tagline-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            margin-bottom: 0;
+        }
+
+        .fade-up-animation {
+            opacity: 0;
+            transform: translateY(15px);
+            animation: wordFadeIn 0.8s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .fade-in-delay-animation {
+            opacity: 0;
+            animation: fadeInSimple 0.8s 0.6s ease forwards;
+        }
+
+        .team-illustration-wrapper {
+            position: relative;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 1rem;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 310px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .team-illustration-wrapper:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .tech-bg-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .tech-grid {
+            width: 100%;
+            height: 100%;
+            background-size: 20px 20px;
+            background-image: 
+                linear-gradient(to right, rgba(13, 110, 253, 0.1) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(13, 110, 253, 0.1) 1px, transparent 1px);
+        }
+
+        .floating-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: floatParticle 8s infinite ease-in-out;
+        }
+
+        .p1 { top: 15%; left: 10%; animation-delay: 0s; }
+        .p2 { top: 75%; left: 85%; animation-delay: 2s; }
+        .p3 { top: 40%; left: 90%; animation-delay: 4s; }
+
+        .floating-icon {
+            position: absolute;
+            color: var(--primary-color);
+            opacity: 0.4;
+            font-size: 1.1rem;
+            animation: floatIcon 10s infinite ease-in-out;
+        }
+
+        .fi1 { top: 20%; left: 80%; animation-delay: 1s; }
+        .fi2 { top: 70%; left: 15%; animation-delay: 3s; }
+        .fi3 { top: 45%; left: 5%; animation-delay: 5s; }
+
+        .team-image-container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+
+        .team-illustration-wrapper:hover .team-image-container {
+            transform: translateY(-8px);
+        }
+
+        .team-image {
+            max-width: 100%;
+            max-height: 250px;
+            object-fit: contain;
+            filter: drop-shadow(0 8px 16px rgba(13, 110, 253, 0.1));
+            animation: gentleBreathing 5s infinite ease-in-out;
+        }
+
+        /* Micro-animations: tablet glow, stethoscope shine */
+        .micro-glow {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(13, 110, 253, 0.4) 0%, transparent 70%);
+            mix-blend-mode: screen;
+            pointer-events: none;
+            opacity: 0.7;
+            animation: devicePulse 3s infinite ease-in-out;
+        }
+
+        .tablet-glow {
+            bottom: 30%;
+            right: 15%;
+            background: radial-gradient(circle, rgba(13, 148, 136, 0.5) 0%, transparent 70%);
+        }
+
+        .clipboard-glow {
+            bottom: 35%;
+            left: 20%;
+            animation-delay: 1.5s;
+        }
+
+        .stethoscope-shine {
+            position: absolute;
+            top: 25%;
+            left: 55%;
+            width: 6px;
+            height: 6px;
+            background-color: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #fff, 0 0 20px var(--primary-color);
+            opacity: 0.8;
+            animation: stethShine 4s infinite ease-in-out;
+        }
+
+        /* Micro-animation Keyframes */
+        @keyframes fadeInSimple {
+            to { opacity: 1; }
+        }
+
+        @keyframes floatParticle {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+            50% { transform: translateY(-15px) translateX(8px); opacity: 0.8; }
+        }
+
+        @keyframes floatIcon {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.2; }
+            50% { transform: translateY(-10px) rotate(15deg); opacity: 0.5; }
+        }
+
+        @keyframes gentleBreathing {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-4px) scale(1.02); }
+        }
+
+        @keyframes devicePulse {
+            0%, 100% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.3); opacity: 0.8; }
+        }
+
+        @keyframes stethShine {
+            0%, 80%, 100% { transform: scale(1); opacity: 0.4; box-shadow: 0 0 5px #fff; }
+            90% { transform: scale(1.8); opacity: 1; box-shadow: 0 0 15px #fff, 0 0 25px var(--primary-color); }
+        }
+
+        /* Founder's Vision Section Styles */
+        .founder-image-wrapper {
+            position: relative;
+            display: inline-block;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid rgba(13, 110, 253, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            animation: founderFloat 6s infinite ease-in-out;
+            max-width: 100%;
+        }
+
+        .founder-image {
+            max-width: 100%;
+            height: auto;
+            max-height: 480px;
+            object-fit: cover;
+            display: block;
+            border-radius: 14px;
+        }
+
+        .founder-glow-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            box-shadow: inset 0 0 40px rgba(13, 110, 253, 0.15);
+            border-radius: 14px;
+        }
+
+        .vision-mission-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .vision-mission-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-color) !important;
+        }
+
+        .value-mini-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .value-mini-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary-color);
+        }
+
+        .value-mini-card i {
+            font-size: 1.1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .value-mini-card:hover i {
+            transform: scale(1.2);
+        }
+
+        .founder-quote-wrapper {
+            border-left: 3px solid var(--primary-color);
+            padding-left: 1rem;
+            margin-top: 1.5rem;
+            background-color: rgba(13, 110, 253, 0.03);
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        @keyframes founderFloat {
+            0%, 100% { transform: translateY(0); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); }
+            50% { transform: translateY(-8px); box-shadow: 0 15px 35px rgba(13, 110, 253, 0.12); }
+        }
+    </style>
+</head>
+<body class="{% if current_theme == 'dark' %}dark-theme{% endif %}">
+
+    <!-- Sticky Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top py-3">
+        <div class="container">
+            <a class="navbar-brand navbar-brand-custom d-flex align-items-center" href="#home">
+                <i class="bi bi-share text-primary me-2"></i>MediConnect India
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="bi bi-list fs-3 text-primary"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-1 gap-lg-3">
+                    <li class="nav-item"><a class="nav-link nav-link-custom" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom" href="#stakeholders">Stakeholders</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom" href="#pricing">Metrics</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <button class="btn btn-link p-0 theme-toggle-btn text-secondary" id="theme-toggle" title="Toggle Light/Dark Theme">
+                        <i class="bi {% if current_theme == 'dark' %}bi-sun-fill{% else %}bi-moon-fill{% endif %}"></i>
+                    </button>
+                    
+                    {% if current_user.is_authenticated %}
+                        {% if current_user.role == 'SuperAdmin' %}
+                            <a href="{{ url_for('super_admin.dashboard') }}" class="btn btn-primary px-4 rounded-pill btn-ripple">Dashboard</a>
+                        {% elif current_user.role == 'HospitalAdmin' %}
+                            <a href="{{ url_for('admin.dashboard') }}" class="btn btn-primary px-4 rounded-pill btn-ripple">Admin Dashboard</a>
+                        {% elif current_user.role == 'Doctor' %}
+                            <a href="{{ url_for('doctor.dashboard') }}" class="btn btn-primary px-4 rounded-pill btn-ripple">OPD Portal</a>
+                        {% else %}
+                            <a href="{{ url_for('auth.profile') }}" class="btn btn-primary px-4 rounded-pill btn-ripple">My Profile</a>
+                        {% endif %}
+                    {% else %}
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-outline-primary px-4 rounded-pill btn-ripple">Login</a>
+                        <a href="{{ url_for('auth.register_hospital') }}" class="btn btn-primary px-4 rounded-pill btn-ripple">Register Hospital</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Interactive Background Canvas Wrapper -->
+    <div style="position: relative;">
+        <canvas id="network-bg"></canvas>
+
+        <!-- Hero Section -->
+        <header class="hero-section" id="home">
+            <div class="container relative-wrapper">
+                <!-- Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show rounded-3 shadow-sm mb-5" role="alert">
+                                {% if category == 'success' %}
+                                    <i class="bi bi-check-circle-fill me-2"></i>
+                                {% elif category == 'danger' or category == 'warning' %}
+                                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                {% else %}
+                                    <i class="bi bi-info-circle-fill me-2"></i>
+                                {% endif %}
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-4 text-start">
+                        <div class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill mb-3 fw-bold">
+                            <i class="bi bi-shield-check me-1"></i> National Health Stack Integrated
+                        </div>
+                        <h1 class="hero-title mb-4 animated-heading" style="font-size: 2.25rem;">
+                            <span>One Platform.</span><br>
+                            <span>Powering</span>
+                            <span class="underline-highlight">Healthcare</span>
+                            <span>Across</span>
+                            <span class="underline-highlight">India.</span>
+                        </h1>
+                        <p class="hero-subtitle mb-4 text-secondary leading-relaxed" style="font-size: 0.85rem;">
+                            MediConnect India enables hospitals, clinics, laboratories, pharmacies and patients to collaborate through one secure, unified digital healthcare ecosystem. Streamline operations and secure patient data transfers nationwide.
+                        </p>
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="{{ url_for('auth.register_hospital') }}" class="btn btn-primary btn-md px-3 py-2 rounded-3 shadow-sm fw-semibold btn-ripple">Get Started</a>
+                            <a href="#features" class="btn btn-outline-secondary btn-md px-3 py-2 rounded-3 fw-semibold btn-ripple">Explore Platform</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Premium Interactive Connected Node Network Graphic -->
+                    <div class="col-lg-4">
+                        <div class="network-graphic-wrapper">
+                            <div class="network-graphic">
+                                <!-- Connecting animated SVG paths -->
+                                <svg class="w-100 h-100" style="position: absolute; top:0; left:0; pointer-events: none;">
+                                    <!-- Dynamic glow connections -->
+                                    <path id="flow-top-left" d="M 100,60 L 255,225" stroke="var(--border-color)" stroke-width="2" fill="none" class="line-flow"/>
+                                    <path id="flow-top-right" d="M 410,60 L 255,225" stroke="var(--border-color)" stroke-width="2" fill="none" class="line-flow"/>
+                                    <path id="flow-bottom-left" d="M 100,390 L 255,225" stroke="var(--border-color)" stroke-width="2" fill="none" class="line-flow"/>
+                                    <path id="flow-bottom-right" d="M 410,390 L 255,225" stroke="var(--border-color)" stroke-width="2" fill="none" class="line-flow"/>
+                                    <path id="flow-mid-left" d="M 50,225 L 255,225" stroke="var(--border-color)" stroke-width="2" fill="none" class="line-flow"/>
+                                    <path id="flow-mid-right" d="M 460,225 L 255,225" stroke="var(--border-color)" stroke-width="2" fill="none" class="line-flow"/>
+                                </svg>
+                                
+                                <!-- Core platform node -->
+                                <div class="network-node node-center" title="MediConnect Central Server">
+                                    <i class="bi bi-hdd-network"></i>
+                                </div>
+                                
+                                <!-- Interconnected hospital nodes -->
+                                <div class="network-node node-top-left" title="Hospital Node 01">
+                                    <i class="bi bi-hospital"></i>
+                                </div>
+                                <div class="network-node node-top-right" title="Hospital Node 02">
+                                    <i class="bi bi-hospital"></i>
+                                </div>
+                                <div class="network-node node-bottom-left" title="Hospital Node 03">
+                                    <i class="bi bi-hospital"></i>
+                                </div>
+                                <div class="network-node node-bottom-right" title="Hospital Node 04">
+                                    <i class="bi bi-hospital"></i>
+                                </div>
+                                <div class="network-node node-mid-left" title="Hospital Node 05">
+                                    <i class="bi bi-hospital"></i>
+                                </div>
+                                <div class="network-node node-mid-right" title="Hospital Node 06">
+                                    <i class="bi bi-hospital"></i>
+                                </div>
+
+                                <!-- Floating minimal character vector cards representing hospital connections -->
+                                <div class="character-card char-doctor" style="transform: translateY(0);">
+                                    <div class="char-img text-primary"><i class="bi bi-hospital-fill"></i></div>
+                                    <div>
+                                        <div class="char-title">Hospital Node 01</div>
+                                        <div class="char-status">Syncing Records</div>
+                                    </div>
+                                </div>
+                                <div class="character-card char-nurse">
+                                    <div class="char-img text-success"><i class="bi bi-hospital-fill"></i></div>
+                                    <div>
+                                        <div class="char-title">Hospital Node 02</div>
+                                        <div class="char-status">Pipeline Active</div>
+                                    </div>
+                                </div>
+                                <div class="character-card char-tech">
+                                    <div class="char-img text-warning"><i class="bi bi-hospital-fill"></i></div>
+                                    <div>
+                                        <div class="char-title">Hospital Node 03</div>
+                                        <div class="char-status">Encrypted Link</div>
+                                    </div>
+                                </div>
+                                <div class="character-card char-pharmacist">
+                                    <div class="char-img text-info"><i class="bi bi-hospital-fill"></i></div>
+                                    <div>
+                                        <div class="char-title">Hospital Node 04</div>
+                                        <div class="char-status">OPD Synced</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right: Healthcare Team Illustration & Tagline -->
+                    <div class="col-lg-4 text-center text-lg-start">
+                        <div class="tagline-wrapper mb-3">
+                            <h2 class="tagline-heading fade-up-animation">
+                                Your Health.<br>
+                                <span class="text-primary">Our Responsibility.</span>
+                            </h2>
+                            <p class="tagline-subtitle fade-in-delay-animation">
+                                Together for a healthier India. Empowering hospitals across India with one secure healthcare platform.
+                            </p>
+                        </div>
+                        <div class="team-illustration-wrapper">
+                            <!-- Subtle healthcare technology background -->
+                            <div class="tech-bg-overlay">
+                                <div class="tech-grid"></div>
+                                <div class="floating-particle p1"></div>
+                                <div class="floating-particle p2"></div>
+                                <div class="floating-particle p3"></div>
+                                <div class="floating-icon fi1"><i class="bi bi-heart-pulse-fill"></i></div>
+                                <div class="floating-icon fi2"><i class="bi bi-shield-fill-check"></i></div>
+                                <div class="floating-icon fi3"><i class="bi bi-activity"></i></div>
+                            </div>
+                            <!-- Character container -->
+                            <div class="team-image-container">
+                                <img src="{{ url_for('static', filename='images/healthcare_team.png') }}" alt="Healthcare Team illustration" class="team-image">
+                                <!-- Micro-animations overlays -->
+                                <div class="stethoscope-shine"></div>
+                                <div class="micro-glow tablet-glow"></div>
+                                <div class="micro-glow clipboard-glow"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+
+
+
+    <!-- Who Can Use Section -->
+    <section class="section-padding scroll-trigger">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="text-primary fw-bold text-uppercase tracking-wider">Platform Stakeholders</span>
+                <h2 class="section-title mt-2">Connecting the Healthcare Ecosystem</h2>
+                <p class="section-subtitle">Flexible integration interfaces engineered for all nodes in the medical pathway.</p>
+            </div>
+            
+            <div class="row g-4 stagger-container">
+                <div class="col-md-6 col-lg-3 stagger-item">
+                    <div class="enterprise-card h-100 text-center">
+                        <i class="bi bi-hospital fs-1 text-primary mb-3 d-inline-block"></i>
+                        <h5 class="fw-bold">Hospitals & Clinics</h5>
+                        <p class="text-secondary small mb-0">Orchestrate billing, lab testing, pharmacies, and clinical departments under one console.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 stagger-item">
+                    <div class="enterprise-card h-100 text-center">
+                        <i class="bi bi-heart-pulse-fill fs-1 text-primary mb-3 d-inline-block"></i>
+                        <h5 class="fw-bold">Doctors & Nurses</h5>
+                        <p class="text-secondary small mb-0">Access EMR records, check vitals history, and prescribe medicines instantly.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 stagger-item">
+                    <div class="enterprise-card h-100 text-center">
+                        <i class="bi bi-person-check fs-1 text-primary mb-3 d-inline-block"></i>
+                        <h5 class="fw-bold">Diagnostic Labs</h5>
+                        <p class="text-secondary small mb-0">Process diagnostic packages, fill parameter values, and deliver digital reports.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 stagger-item">
+                    <div class="enterprise-card h-100 text-center">
+                        <i class="bi bi-shield-fill-check fs-1 text-primary mb-3 d-inline-block"></i>
+                        <h5 class="fw-bold">Patients</h5>
+                        <p class="text-secondary small mb-0">Maintain prescription logs, check test findings, and register dynamically.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Platform Stats Section -->
+    <section class="section-padding bg-primary text-white scroll-trigger" id="pricing">
+        <div class="container">
+            <div class="row align-items-center g-5 text-center text-lg-start">
+                <div class="col-lg-5">
+                    <h2 class="fw-bold text-white mb-3">Scale Beyond Boundaries</h2>
+                    <p class="text-white-50 mb-0">MediConnect India provides the backend architecture required to orchestrate healthcare data across thousand-node medical networks.</p>
+                </div>
+                <div class="col-lg-7">
+                    <div class="row g-4">
+                        <div class="col-sm-4">
+                            <div class="h2 fw-bold text-white mb-1 count-target" data-value="{{ stats.hospitals_count }}">0</div>
+                            <div class="text-white-50 small">Hospitals Connected</div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="h2 fw-bold text-white mb-1 count-target" data-value="{{ stats.expert_doctors }}">0</div>
+                            <div class="text-white-50 small">Doctors Registered</div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="h2 fw-bold text-white mb-1 count-target" data-value="{{ stats.patients_served }}">0</div>
+                            <div class="text-white-50 small">Patients Served</div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="h2 fw-bold text-white mb-1 count-target" data-value="{{ stats.appointments_count }}">0</div>
+                            <div class="text-white-50 small">Appointments Managed</div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="h2 fw-bold text-white mb-1 count-target" data-value="{{ stats.lab_tests_count }}">0</div>
+                            <div class="text-white-50 small">Laboratory Tests</div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="h2 fw-bold text-white mb-1 count-target" data-value="{{ stats.prescriptions_count }}">0</div>
+                            <div class="text-white-50 small">Prescriptions Generated</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+    <!-- Testimonials Section -->
+    <section class="section-padding bg-white scroll-trigger">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="text-primary fw-bold text-uppercase tracking-wider">Testimonials</span>
+                <h2 class="section-title mt-2">Trusted by Healthcare Professionals</h2>
+                <p class="section-subtitle">Real feedback from operational healthcare leaders using our network.</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="p-4 border rounded-3 bg-light">
+                        <p class="text-secondary italic mb-3">"We connected our OPD schedules, retail pharmacies inventory, and test billing. The role-based dashboard isolation works beautifully."</p>
+                        <div class="fw-bold text-dark small">Hospital Administrator</div>
+                        <span class="text-muted small">Enterprise Partner Hospital</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-4 border rounded-3 bg-light">
+                        <p class="text-secondary italic mb-3">"Accessing patient vitals logs and writing digital prescriptions is incredibly seamless. Data transfer is fast and highly reliable."</p>
+                        <div class="fw-bold text-dark small">Chief Medical Officer</div>
+                        <span class="text-muted small">Diagnostic Clinic Network</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Founder's Vision Section -->
+    <section class="section-padding bg-light scroll-trigger" id="founder-vision">
+        <div class="container">
+            <div class="row align-items-center g-5 stagger-container">
+                <!-- Left: Founder Image -->
+                <div class="col-lg-5 text-center text-lg-start stagger-item">
+                    <div class="founder-image-wrapper">
+                        <img src="{{ url_for('static', filename='images/founder.jpg') }}" alt="D. B. Pavan" class="founder-image">
+                        <div class="founder-glow-overlay"></div>
+                    </div>
+                </div>
+                
+                <!-- Right: Content -->
+                <div class="col-lg-7 stagger-item">
+                    <div class="founder-content-wrapper text-start">
+                        <span class="text-primary fw-bold text-uppercase tracking-wider">Meet the Founder</span>
+                        <h2 class="fw-bold mt-2 mb-1" style="color: var(--text-primary);">D. B. Pavan</h2>
+                        <div class="text-secondary fw-semibold mb-4">Founder & Developer, MediConnect India</div>
+                        
+                        <p class="founder-message mb-4 leading-relaxed" style="color: var(--text-secondary); font-size: 0.95rem; text-align: justify;">
+                            "Healthcare should never be limited by location or disconnected systems.
+                            <br><br>
+                            MediConnect India was created with a vision to digitally connect hospitals across the country through one secure and intelligent healthcare platform. By enabling hospitals to operate independently while remaining part of a unified ecosystem, we aim to simplify healthcare management, improve collaboration, and provide patients with seamless access to medical services wherever they go.
+                            <br><br>
+                            Our mission is to empower healthcare institutions with modern technology while ensuring security, scalability, and an exceptional user experience."
+                        </p>
+                        
+                        <!-- Mission & Vision Cards Row -->
+                        <div class="row g-3 mb-4 stagger-container">
+                            <div class="col-md-6 stagger-item">
+                                <div class="vision-mission-card border-primary-subtle">
+                                    <h6 class="fw-bold text-primary mb-2"><i class="bi bi-bullseye me-2"></i>Our Mission</h6>
+                                    <p class="text-secondary small mb-0">"To build India's most trusted digital healthcare platform by connecting hospitals through secure, intelligent, and scalable technology."</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 stagger-item">
+                                <div class="vision-mission-card border-primary-subtle">
+                                    <h6 class="fw-bold text-primary mb-2"><i class="bi bi-eye-fill me-2"></i>Our Vision</h6>
+                                    <p class="text-secondary small mb-0">"To make healthcare more connected, efficient, accessible, and technology-driven for every hospital and every patient across India."</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Core Values grid -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold text-dark mb-3">Our Core Values</h6>
+                            <div class="row g-2 stagger-container">
+                                <div class="col-6 col-md-4 stagger-item">
+                                    <div class="value-mini-card">
+                                        <i class="bi bi-lightbulb text-primary"></i>
+                                        <span>Innovation</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-4 stagger-item">
+                                    <div class="value-mini-card">
+                                        <i class="bi bi-shield-check text-primary"></i>
+                                        <span>Security</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-4 stagger-item">
+                                    <div class="value-mini-card">
+                                        <i class="bi bi-heart text-primary"></i>
+                                        <span>Trust</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-4 stagger-item">
+                                    <div class="value-mini-card">
+                                        <i class="bi bi-universal-access text-primary"></i>
+                                        <span>Accessibility</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-4 stagger-item">
+                                    <div class="value-mini-card">
+                                        <i class="bi bi-bounding-box-circles text-primary"></i>
+                                        <span>Scalability</span>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-4 stagger-item">
+                                    <div class="value-mini-card">
+                                        <i class="bi bi-person-heart text-primary"></i>
+                                        <span>Patient-Centric Care</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quote block -->
+                        <div class="founder-quote-wrapper">
+                            <p class="mb-2 italic text-secondary small">
+                                "Technology is most powerful when it helps people. MediConnect India is built to make healthcare more connected, efficient, and accessible across the nation."
+                            </p>
+                            <div class="text-primary fw-bold small">— D. B. Pavan</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section-padding bg-primary text-white text-center scroll-trigger">
+        <div class="container">
+            <h2 class="fw-bold text-white mb-3">Transform Healthcare Management Across India</h2>
+            <p class="text-white-50 mb-4 max-width-600 mx-auto">Register your organization details to verify your clinical credentials and join the MediConnect India stack.</p>
+            <div class="d-flex flex-wrap justify-content-center gap-3">
+                <a href="{{ url_for('auth.register_hospital') }}" class="btn btn-light btn-lg px-4 rounded-3 fw-bold text-primary btn-ripple">Register Hospital</a>
+                <a href="{{ url_for('auth.register') }}" class="btn btn-outline-light btn-lg px-4 rounded-3 fw-bold btn-ripple">Create Patient Account</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer-custom">
+        <div class="container">
+            <div class="row g-5 mb-5">
+                <div class="col-lg-4">
+                    <a class="navbar-brand navbar-brand-custom d-flex align-items-center mb-3" href="#">
+                        <i class="bi bi-share text-primary me-2"></i>MediConnect India
+                    </a>
+                    <p class="text-secondary small">Centralized healthcare infrastructure software connecting hospitals, clinics, laboratories, pharmacies, and patients under one national security architecture.</p>
+                </div>
+                <div class="col-md-3 col-lg-2">
+                    <div class="footer-title">Ecosystem</div>
+                    <ul class="list-unstyled d-flex flex-column gap-2">
+                        <li><a class="footer-link" href="#stakeholders">Hospital Nodes</a></li>
+                        <li><a class="footer-link" href="#stakeholders">Clinical Staff</a></li>
+                        <li><a class="footer-link" href="#stakeholders">Diagnostics</a></li>
+                        <li><a class="footer-link" href="#stakeholders">Patients</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 col-lg-2">
+                    <div class="footer-title">Metrics</div>
+                    <ul class="list-unstyled d-flex flex-column gap-2">
+                        <li><a class="footer-link" href="#pricing">Real-time Counters</a></li>
+                        <li><a class="footer-link" href="{{ url_for('auth.register_hospital') }}">Register Hub</a></li>
+                        <li><a class="footer-link" href="{{ url_for('auth.register') }}">Patient Portal</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 col-lg-2">
+                    <div class="footer-title">Resources</div>
+                    <ul class="list-unstyled d-flex flex-column gap-2">
+                        <li><a class="footer-link" href="#">API Docs</a></li>
+                        <li><a class="footer-link" href="#">System Status</a></li>
+                        <li><a class="footer-link" href="#">Case Studies</a></li>
+                        <li><a class="footer-link" href="#">Security Whitepaper</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 col-lg-2">
+                    <div class="footer-title">Company</div>
+                    <ul class="list-unstyled d-flex flex-column gap-2">
+                        <li><a class="footer-link" href="#">About Us</a></li>
+                        <li><a class="footer-link" href="#">Careers</a></li>
+                        <li><a class="footer-link" href="#">Blog</a></li>
+                        <li><a class="footer-link" href="#">Compliance</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-top pt-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                <span class="text-secondary small">&copy; 2026 MediConnect India. All rights reserved.</span>
+                <div class="d-flex gap-3">
+                    <a class="footer-link" href="#">Privacy Policy</a>
+                    <a class="footer-link" href="#">Terms of Service</a>
+                    <a class="footer-link" href="#">Cookie Policy</a>
+                </div>
+                <div class="d-flex gap-3 fs-5">
+                    <a class="text-secondary" href="#" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                    <a class="text-secondary" href="#" title="GitHub"><i class="bi bi-github"></i></a>
+                    <a class="text-secondary" href="#" title="X (Twitter)"><i class="bi bi-twitter-x"></i></a>
+                    <a class="text-secondary" href="#" title="YouTube"><i class="bi bi-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Premium Animations and Interactions Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 1. Theme Toggle Sync
+            const body = document.body;
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            
+            const savedTheme = localStorage.getItem('medicare-theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-theme');
+                updateThemeIcon(true);
+            } else {
+                body.classList.remove('dark-theme');
+                updateThemeIcon(false);
+            }
+            
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', function () {
+                    const isDark = body.classList.toggle('dark-theme');
+                    localStorage.setItem('medicare-theme', isDark ? 'dark' : 'light');
+                    updateThemeIcon(isDark);
+                    
+                    fetch('/toggle-theme')
+                        .catch(err => console.log('Theme sync error: ', err));
+                });
+            }
+            
+            function updateThemeIcon(isDark) {
+                if (!themeToggleBtn) return;
+                const icon = themeToggleBtn.querySelector('i');
+                if (icon) {
+                    if (isDark) {
+                        icon.className = 'bi bi-sun-fill';
+                    } else {
+                        icon.className = 'bi bi-moon-fill';
+                    }
+                }
+            }
+
+            // 2. Interactive Network Canvas Background
+            const canvas = document.getElementById('network-bg');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                let width = canvas.width = canvas.offsetWidth;
+                let height = canvas.height = canvas.offsetHeight;
+                
+                const particles = [];
+                const particleCount = 45;
+                const connectionDistance = 110;
+                let mouseX = null;
+                let mouseY = null;
+                
+                window.addEventListener('resize', () => {
+                    width = canvas.width = canvas.offsetWidth;
+                    height = canvas.height = canvas.offsetHeight;
+                });
+                
+                document.body.addEventListener('mousemove', (e) => {
+                    const rect = canvas.getBoundingClientRect();
+                    mouseX = e.clientX - rect.left;
+                    mouseY = e.clientY - rect.top;
+                });
+                
+                document.body.addEventListener('mouseleave', () => {
+                    mouseX = null;
+                    mouseY = null;
+                });
+                
+                class Particle {
+                    constructor() {
+                        this.x = Math.random() * width;
+                        this.y = Math.random() * height;
+                        this.vx = (Math.random() - 0.5) * 0.4;
+                        this.vy = (Math.random() - 0.5) * 0.4;
+                        this.radius = Math.random() * 2 + 1;
+                    }
+                    
+                    update() {
+                        this.x += this.vx;
+                        this.y += this.vy;
+                        
+                        if (this.x < 0 || this.x > width) this.vx *= -1;
+                        if (this.y < 0 || this.y > height) this.vy *= -1;
+                    }
+                    
+                    draw() {
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                        ctx.fillStyle = body.classList.contains('dark-theme') ? 'rgba(13, 148, 136, 0.4)' : 'rgba(13, 110, 253, 0.25)';
+                        ctx.fill();
+                    }
+                }
+                
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push(new Particle());
+                }
+                
+                function animate() {
+                    ctx.clearRect(0, 0, width, height);
+                    
+                    // Draw connections
+                    for (let i = 0; i < particles.length; i++) {
+                        particles[i].update();
+                        particles[i].draw();
+                        
+                        for (let j = i + 1; j < particles.length; j++) {
+                            const dx = particles[i].x - particles[j].x;
+                            const dy = particles[i].y - particles[j].y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
+                            
+                            if (dist < connectionDistance) {
+                                const opacity = (1 - dist / connectionDistance) * 0.15;
+                                ctx.strokeStyle = body.classList.contains('dark-theme') ? `rgba(13, 148, 136, ${opacity})` : `rgba(13, 110, 253, ${opacity})`;
+                                ctx.lineWidth = 0.8;
+                                ctx.beginPath();
+                                ctx.moveTo(particles[i].x, particles[i].y);
+                                ctx.lineTo(particles[j].x, particles[j].y);
+                                ctx.stroke();
+                            }
+                        }
+                        
+                        if (mouseX !== null && mouseY !== null) {
+                            const dx = particles[i].x - mouseX;
+                            const dy = particles[i].y - mouseY;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
+                            if (dist < 150) {
+                                const opacity = (1 - dist / 150) * 0.25;
+                                ctx.strokeStyle = body.classList.contains('dark-theme') ? `rgba(13, 148, 136, ${opacity})` : `rgba(13, 110, 253, ${opacity})`;
+                                ctx.lineWidth = 1;
+                                ctx.beginPath();
+                                ctx.moveTo(particles[i].x, particles[i].y);
+                                ctx.lineTo(mouseX, mouseY);
+                                ctx.stroke();
+                            }
+                        }
+                    }
+                    
+                    requestAnimationFrame(animate);
+                }
+                
+                animate();
+            }
+
+            // 3. Scroll Animations using IntersectionObserver
+            const observersOptions = {
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        
+                        // Trigger stagger container animation
+                        const container = entry.target.querySelector('.stagger-container');
+                        if (container) {
+                            container.classList.add('visible');
+                        }
+                        
+                        // Trigger counters if they exist in the target
+                        const counters = entry.target.querySelectorAll('.count-target');
+                        if (counters.length > 0) {
+                            counters.forEach(c => animateCounter(c));
+                        }
+                        
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observersOptions);
+
+            document.querySelectorAll('.scroll-trigger').forEach(el => {
+                observer.observe(el);
+            });
+
+            // 4. Smooth Counter Increment Animation
+            function animateCounter(counter) {
+                const target = parseInt(counter.getAttribute('data-value'));
+                const duration = 1500; // 1.5s
+                const startTime = performance.now();
+                
+                function update(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    // Ease out cubic
+                    const easeProgress = 1 - Math.pow(1 - progress, 3);
+                    const currentVal = Math.floor(easeProgress * target);
+                    
+                    if (target >= 1000000) {
+                        counter.textContent = (currentVal / 1000000).toFixed(1) + "M+";
+                    } else if (target >= 1000) {
+                        counter.textContent = currentVal.toLocaleString() + "+";
+                    } else {
+                        counter.textContent = currentVal;
+                    }
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(update);
+                    }
+                }
+                
+                requestAnimationFrame(update);
+            }
+
+            // 5. Interactive SVG Connection Lines Glow & Mouse Move Interaction
+            const networkGraphic = document.querySelector('.network-graphic');
+            
+            function drawConnections() {
+                if (!networkGraphic) return;
+                const center = networkGraphic.querySelector('.node-center');
+                const nodes = networkGraphic.querySelectorAll('.network-node:not(.node-center)');
+                
+                const cRect = center.getBoundingClientRect();
+                const pRect = networkGraphic.getBoundingClientRect();
+                const cx = cRect.left - pRect.left + cRect.width / 2;
+                const cy = cRect.top - pRect.top + cRect.height / 2;
+                
+                const flows = {
+                    'node-top-left': document.getElementById('flow-top-left'),
+                    'node-top-right': document.getElementById('flow-top-right'),
+                    'node-bottom-left': document.getElementById('flow-bottom-left'),
+                    'node-bottom-right': document.getElementById('flow-bottom-right'),
+                    'node-mid-left': document.getElementById('flow-mid-left'),
+                    'node-mid-right': document.getElementById('flow-mid-right')
+                };
+                
+                nodes.forEach(node => {
+                    let key = '';
+                    if (node.classList.contains('node-top-left')) key = 'node-top-left';
+                    else if (node.classList.contains('node-top-right')) key = 'node-top-right';
+                    else if (node.classList.contains('node-bottom-left')) key = 'node-bottom-left';
+                    else if (node.classList.contains('node-bottom-right')) key = 'node-bottom-right';
+                    else if (node.classList.contains('node-mid-left')) key = 'node-mid-left';
+                    else if (node.classList.contains('node-mid-right')) key = 'node-mid-right';
+                    
+                    if (key && flows[key]) {
+                        const nRect = node.getBoundingClientRect();
+                        const nx = nRect.left - pRect.left + nRect.width / 2;
+                        const ny = nRect.top - pRect.top + nRect.height / 2;
+                        flows[key].setAttribute('d', `M ${nx},${ny} L ${cx},${cy}`);
+                    }
+                });
+            }
+
+            if (networkGraphic) {
+                setTimeout(drawConnections, 150);
+                window.addEventListener('resize', drawConnections);
+
+                networkGraphic.addEventListener('mousemove', (e) => {
+                    document.querySelectorAll('.line-flow').forEach(path => {
+                        path.style.stroke = 'var(--primary-color)';
+                        path.style.strokeWidth = '3';
+                    });
+                });
+
+                networkGraphic.addEventListener('mouseleave', () => {
+                    document.querySelectorAll('.line-flow').forEach(path => {
+                        path.style.stroke = 'var(--border-color)';
+                        path.style.strokeWidth = '2';
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
