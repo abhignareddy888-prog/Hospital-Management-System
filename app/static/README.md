@@ -1,0 +1,1 @@
+static part is present
